@@ -1,0 +1,83 @@
+
+{% block title %}Clientes{% endblock %}
+{% block breadcrumb %}Clientes{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">
+                Todos los clientes
+                  <a href="{{path('export_customers_to_csv')}}" class="btn btn-primary btn-lg active btn-sm float-right" role="button" aria-pressed="true">
+                    <span class="btn-inner--icon"><i class="fas fa-file-excel"></i></span>
+                    <span class="btn-inner--text">Exportar</span>
+                  </a>
+              </h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">
+                      {{knp_pagination_sortable(customers, 'Nombre', 'c.name')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(customers, 'Correo Electrónico', 'c.email')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(customers, 'Teléfono', 'c.phone')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(customers, 'Ciudad', 'c.city')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                        <tr>
+                            <th scope="row">
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="{{ asset('/img/theme/user.png')}}">
+                                    </a>
+                                    <div class="media-body">
+                                    <span class="mb-0 text-sm">{{ customer.name }}</span>
+                                    </div>
+                                </div>
+                            </th>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.phone }}</td>
+                            <td>{{ customer.city }}</td>
+                            <td class="text-right">
+                              <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                  <a class="dropdown-item" href="{{ path('customer_show', { 'id': customer.id }) }}">Ver Cartera</a>
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer py-4">
+                {{ knp_pagination_render(customers) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+

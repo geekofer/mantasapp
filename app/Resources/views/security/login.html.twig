@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+	<div class="panel panel-default" id="panel-login">
+		<div class="panel-heading ">
+	 		<button type="button" class="btn btn-primary btn-lg" style="font-weight: bold;font-size: 32px; display: block; margin: 0 auto;">MANTA SAS</button>
+		</div>
+		<div class="panel-body">
+			{% if error %}
+				<div class="col-md-offset-3 col-md-6">
+					<div class="alert alert-warning alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<p class="text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+					</div>				  
+				</div>
+
+			{% endif %}
+		  	<form action="{{ path('login') }}" method="post" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-md-4 control-label">Usuario <small><em>admin</em></small></label>
+					<div class="col-sm-12">
+						<input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-4 control-label">Contraseña <small><em>adminpass</em></small></label>
+					<div class="col-sm-12">
+						<input type="password" id="password" class="form-control" name="_password" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-5 col-md-1">
+					  <button type="submit" class="btn btn-primary">Acceder</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

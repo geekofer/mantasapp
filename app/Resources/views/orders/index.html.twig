@@ -1,0 +1,89 @@
+
+{% block title %}Ventas{% endblock %}
+{% block breadcrumb %}Ventas{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">
+                Todas las ventas
+                  <a href="{{path('export_orders_to_csv')}}" class="btn btn-primary btn-lg active btn-sm float-right" role="button" aria-pressed="true">
+                    <span class="btn-inner--icon"><i class="fas fa-file-excel"></i></span>
+                    <span class="btn-inner--text">Exportar</span>
+                  </a>
+              </h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'ID', 'o.id')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'Referencia', 'o.reference')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'Cliente', 'c.name')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'Estatus', 'o.status')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'Monto', 'o.total')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                    <th scope="col">
+                      {{knp_pagination_sortable(orders, 'Fecha', 'o.date')}}
+                      <i class="fas fa-sort"></i> 
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.reference }}</td>
+                            <th scope="row">
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="{{ asset('/img/theme/user.png')}}">
+                                    </a>
+                                    <div class="media-body">
+                                    <span class="mb-0 text-sm">{{ order.customer.name }}</span>
+                                    </div>
+                                </div>
+                            </th>
+                            <td>
+                              <span class="badge badge-dot mr-4">
+                              {% if order.status == '_PENDING_' %}
+                                <i class="bg-warning"></i> Pendiente
+                              {% else %}
+                                <i class="bg-success"></i> Pagada
+                              {% endif %}
+                              </span>
+                            </td>
+                            <td>{{ order.total|number_format(2, '.', '.') }}</td>
+                            <td>{{ order.date|date("d/m/Y h:i:s") }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer py-4">
+                {{ knp_pagination_render(orders) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
+

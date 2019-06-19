@@ -1,0 +1,145 @@
+{% block title %}Cartera
+{% endblock %}
+{% block breadcrumb %}Cartera
+{% endblock %}
+
+{% block customheader %}
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+        <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Cliente #{{customer.id}}</h5>
+                      <span class="h2 font-weight-bold mb-0">{{customer.name}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                        <i class="fas fa-user"></i>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-danger mr-2"><i class="fas fa-envelope"></i> {{customer.email}}</span>
+                    <span class="text-nowrap"><i class="fas fa-phone"></i> {{customer.phone}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Vendido</h5>
+                      <span class="h2 font-weight-bold mb-0">{{paid_orders|number_format(2, '.', '.')}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                        <i class="fas fa-users"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-nowrap">en ventas</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Por Cobrar</h5>
+                       <span class="h2 font-weight-bold mb-0">{{unpaid_orders|number_format(2, '.', '.')}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                        <i class="fas fa-percent"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-nowrap">en ventas</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Cartera</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">
+                                    {{knp_pagination_sortable(orders, 'ID', 'o.id')}}
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col">
+                                    {{knp_pagination_sortable(orders, 'Referencia', 'o.reference')}}
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col">
+                                    {{knp_pagination_sortable(orders, 'Estatus', 'o.status')}}
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col">
+                                    {{knp_pagination_sortable(orders, 'Monto', 'o.total')}}
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col">
+                                    {{knp_pagination_sortable(orders, 'Fecha', 'o.date')}}
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.reference }}</td>
+                                    <td>
+                                        <span class="badge badge-dot mr-4">
+                                            {% if order.status == '_PENDING_' %}
+                                                <i class="bg-warning"></i>
+                                                Pendiente
+                                            {% else %}
+                                                <i class="bg-success"></i>
+                                                Pagada
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td>{{ order.total }}</td>
+                                    <td>{{ order.date|date("d/m/Y h:i:s") }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer py-4">
+                    {{ knp_pagination_render(orders) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
